@@ -1,142 +1,377 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>今天你喊號｜橘時咖啡</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>橘時咖啡｜今天你喊號</title>
 
-<style>
-body{
-margin:0;
-background:#fff7ef;
-font-family:sans-serif;
-display:flex;
-justify-content:center;
-padding:30px;
-color:#3d220f;
-}
+  <style>
+    :root{
+      --orange:#f47b20;
+      --deep:#4a250f;
+      --cream:#fff4df;
+      --gold:#ffc247;
+    }
 
-.container{
-max-width:480px;
-width:100%;
-text-align:center;
-}
+    *{
+      box-sizing:border-box;
+      user-select:none;
+      -webkit-tap-highlight-color:transparent;
+    }
 
-.logo{
-font-size:32px;
-font-weight:900;
-margin-bottom:10px;
-color:#ff6b00;
-}
+    body{
+      margin:0;
+      font-family:sans-serif;
+      background:linear-gradient(135deg,#fff8ea,#ffd49e,#f47b20);
+      min-height:100vh;
+      overflow-x:hidden;
+      color:#4a250f;
+    }
 
-.title{
-font-size:42px;
-font-weight:900;
-line-height:1.2;
-margin-bottom:15px;
-}
+    .app{
+      max-width:1200px;
+      margin:auto;
+      padding:30px 20px;
+    }
 
-.sub{
-font-size:20px;
-margin-bottom:25px;
-color:#7b4b25;
-}
+    .title{
+      text-align:center;
+      font-size:72px;
+      font-weight:900;
+      color:#f47b20;
+      line-height:1;
+    }
 
-.card{
-background:white;
-border-radius:30px;
-padding:30px;
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-}
+    .sub{
+      text-align:center;
+      margin-top:15px;
+      font-size:28px;
+      font-weight:700;
+    }
 
-.number{
-font-size:110px;
-font-weight:900;
-color:#ff6b00;
-margin:20px 0;
-}
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 380px;
+      gap:30px;
+      margin-top:30px;
+      align-items:center;
+    }
 
-button{
-border:none;
-background:#ff6b00;
-color:white;
-font-size:24px;
-padding:18px 40px;
-border-radius:100px;
-font-weight:900;
-cursor:pointer;
-box-shadow:0 6px 0 #cc5500;
-}
+    .wheel-wrap{
+      position:relative;
+      width:520px;
+      height:520px;
+      margin:auto;
+    }
 
-button:active{
-transform:translateY(3px);
-box-shadow:0 3px 0 #cc5500;
-}
+    .pointer{
+      position:absolute;
+      top:-10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;
+      height:0;
+      border-left:25px solid transparent;
+      border-right:25px solid transparent;
+      border-top:55px solid #f05b22;
+      z-index:10;
+    }
 
-.desc{
-margin-top:25px;
-font-size:18px;
-line-height:1.7;
-}
+    .wheel{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      overflow:hidden;
+      border:12px solid white;
+      transition:transform 4.8s cubic-bezier(.08,.75,.08,1);
 
-.footer{
-margin-top:30px;
-font-size:14px;
-color:#999;
-}
+      background:
+      conic-gradient(
+      #fff0a6 0 36deg,
+      #ffb0a5 36deg 72deg,
+      #ffe08b 72deg 108deg,
+      #ffc2df 108deg 144deg,
+      #bce8ff 144deg 180deg,
+      #b8e8a6 180deg 216deg,
+      #d7b7ff 216deg 252deg,
+      #afe5f2 252deg 288deg,
+      #ffd29a 288deg 324deg,
+      #f9e6b0 324deg 360deg
+      );
 
-</style>
+      box-shadow:0 15px 40px rgba(0,0,0,.2);
+      position:relative;
+    }
+
+    .num{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:70px;
+      height:40px;
+      margin-left:-35px;
+      margin-top:-20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+      font-weight:900;
+    }
+
+    .center{
+      position:absolute;
+      width:160px;
+      height:160px;
+      background:white;
+      border-radius:50%;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      font-weight:900;
+      color:#f47b20;
+      z-index:5;
+      box-shadow:0 10px 25px rgba(0,0,0,.2);
+    }
+
+    .draw-btn{
+      margin-top:35px;
+      border:none;
+      background:#f47b20;
+      color:white;
+      font-size:34px;
+      padding:18px 50px;
+      border-radius:999px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+    }
+
+    .panel{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .card{
+      background:white;
+      border-radius:30px;
+      padding:25px;
+      box-shadow:0 10px 30px rgba(0,0,0,.1);
+    }
+
+    .card h2{
+      margin:0 0 15px;
+      font-size:34px;
+      color:#f47b20;
+    }
+
+    .rule{
+      line-height:1.8;
+      font-size:22px;
+      font-weight:700;
+    }
+
+    .result{
+      text-align:center;
+      background:#4a250f;
+      color:white;
+    }
+
+    .result-num{
+      font-size:120px;
+      color:#ffc247;
+      font-weight:900;
+    }
+
+    .history span{
+      display:inline-block;
+      background:#ffe5c2;
+      padding:8px 14px;
+      border-radius:999px;
+      margin:5px;
+      font-weight:900;
+    }
+
+    @media(max-width:900px){
+
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .wheel-wrap{
+        width:88vw;
+        height:88vw;
+      }
+
+      .title{
+        font-size:54px;
+      }
+
+      .sub{
+        font-size:22px;
+      }
+
+    }
+
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-<div class="logo">
-橘時咖啡
-</div>
+  <div class="title">
+    今天你喊號
+  </div>
 
-<div class="title">
-今天你喊號
-</div>
+  <div class="sub">
+    晚上轉到你，這單我們請
+  </div>
 
-<div class="sub">
-晚上轉盤。<br>
-轉到你，這單我們請。
-</div>
+  <div class="layout">
 
-<div class="card">
+    <div style="text-align:center;">
 
-<div id="number" class="number">
-?
-</div>
+      <div class="wheel-wrap">
 
-<button onclick="drawNumber()">
-開始抽號
-</button>
+        <div class="pointer"></div>
 
-<div class="desc">
-留言你的幸運數字。<br>
-晚上我們真的會轉。
-</div>
+        <div class="wheel" id="wheel">
 
-</div>
+        </div>
 
-<div class="footer">
-Orange Time Coffee
-</div>
+        <div class="center">
+          <div>1-100</div>
+          <div>轉號碼</div>
+        </div>
+
+      </div>
+
+      <button class="draw-btn" onclick="spin()">
+        開始轉盤
+      </button>
+
+    </div>
+
+    <div class="panel">
+
+      <div class="card">
+        <h2>活動規則</h2>
+
+        <div class="rule">
+          💬 留言 1～100 任一數字<br>
+          ☝️ 每人限留言一次<br>
+          🧡 轉到你，1000元內橘時請<br>
+          📱 中獎需出示本人帳號
+        </div>
+      </div>
+
+      <div class="card result">
+
+        <div style="font-size:30px;font-weight:900;">
+          今晚號碼
+        </div>
+
+        <div class="result-num" id="result">
+          ?
+        </div>
+
+      </div>
+
+      <div class="card history" id="history">
+        最近號碼：尚未開轉
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
 <script>
 
-function drawNumber(){
+const wheel = document.getElementById("wheel");
 
-const num = Math.floor(Math.random()*100)+1;
+let rotation = 0;
 
-document.getElementById("number").innerText = num;
+for(let i=0;i<10;i++){
+
+  const div = document.createElement("div");
+
+  const angle = i * 36;
+
+  div.className = "num";
+
+  div.style.transform =
+  `rotate(${angle}deg)
+   translateY(-190px)
+   rotate(-${angle}deg)`;
+
+  div.innerText = (i+1)*10;
+
+  wheel.appendChild(div);
 
 }
+
+function spin(){
+
+  const num = Math.floor(Math.random()*100)+1;
+
+  const angle = num * 3.6;
+
+  rotation += 360*8 + angle;
+
+  wheel.style.transform = `rotate(${rotation}deg)`;
+
+  setTimeout(()=>{
+
+    document.getElementById("result").innerText = num;
+
+    saveHistory(num);
+
+  },4800);
+
+}
+
+function saveHistory(num){
+
+  let list = JSON.parse(localStorage.getItem("history") || "[]");
+
+  list.unshift(num);
+
+  list = list.slice(0,7);
+
+  localStorage.setItem("history",JSON.stringify(list));
+
+  renderHistory();
+
+}
+
+function renderHistory(){
+
+  const list = JSON.parse(localStorage.getItem("history") || "[]");
+
+  const el = document.getElementById("history");
+
+  if(!list.length){
+
+    el.innerHTML = "最近號碼：尚未開轉";
+
+    return;
+
+  }
+
+  el.innerHTML =
+  "最近號碼：" +
+  list.map(n=>`<span>${n}</span>`).join("");
+
+}
+
+renderHistory();
 
 </script>
 
